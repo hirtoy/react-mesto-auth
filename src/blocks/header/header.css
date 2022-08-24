@@ -1,0 +1,12 @@
+.header {
+	min-width: 320px;
+	padding-top: 28px;
+	border-bottom: 1px solid rgba(84, 84, 84, 0.7);
+}
+
+@media screen and (min-width: 1280px) {
+	.header {
+		padding-top: 45px;
+		padding-bottom: 10px;
+	}
+}
