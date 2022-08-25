@@ -4,7 +4,7 @@ import Main from './Main';
 import Footer from './Footer';
 import ImagePopup from './ImagePopup';
 import React from 'react';
-import { Route, Switch, Redirect, withRouter } from 'react-router-dom';
+import { Route, Switch, Redirect, withRouter, useHistory } from 'react-router-dom';
 import Api from '../utils/Api';
 import * as Auth from '../utils/Auth';
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
@@ -21,11 +21,12 @@ function App() {
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = React.useState(false);
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = React.useState(false);
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = React.useState(false);
+  const [isInfoTooltipOpen, setIsInfoTooltipOpen] = React.useState(false);
   const [selectedCard, setSelectedCard] = React.useState(null);
   const [currentUser, setCurrentUser] = React.useState({});
   const [cards, setCards] = React.useState([]);
   const [email, setEmail] = React.useState('');
-  const [isRegisered, setIsRegitered] = React.useState(false);
+  const [isRegistered, setIsRegistered] = React.useState(false);
 
   const handleEditProfileClick = () => { setIsEditProfilePopupOpen(true); }
   const handleAddPlaceClick = () => { setIsAddPlacePopupOpen(true); }
@@ -33,9 +34,11 @@ function App() {
   const handleInfoTolltipOpen = () => { setIsInfoTooltipOpen(true) };
   const handleCardClick = (card) => { setSelectedCard(card); }
 
-  React.useEffect(
-    () => { handleTokenCheck() }, []
-  );
+  const history = useHistory();
+
+  React.useEffect(() => {
+    handleTokenCheck()
+  }, []);
 
   React.useEffect(() => {
     Api.getProfile()
@@ -108,9 +111,8 @@ function App() {
   }
 
   function handleTokenCheck() {
-    const token = localStorage.getItem('token');
+    let token = localStorage.getItem('jwt');
     if (token) {
-      // проверяем токен пользователя
       Auth.checkToken(token)
         .then((res) => {
           if (res) {
@@ -123,7 +125,7 @@ function App() {
   function handleRegister(email, password) {
     Auth.register(email, password)
       .then((res) => {
-        setIsRegitered(!res.error);
+        setIsRegistered(!res.error);
         handleInfoTolltipOpen();
       });
   }
@@ -132,8 +134,10 @@ function App() {
     Auth.authorize(email, password)
       .then((data) => {
         if (data.token) {
-          localStorage.setItem('token', data.token);
+          localStorage.setItem('jwt', data.token);
           handleLogin(email);
+          // setIsRegitered(true);
+          history.push("/");
         }
       })
   }
@@ -141,12 +145,12 @@ function App() {
   function handleSignOut() {
     setCards([]);
     setEmail('');
-    localStorage.removeItem('token');
+    localStorage.removeItem('jwt');
   }
 
   function handleLogin(email) {
     setEmail(email);
-    props.history.push('/main')
+    history.push('/main')
     //загружаем профиль пользователя и карточки 
     Promise.all([Api.getProfile(), Api.getInitialCards()])
       .then(([profile, cards]) => {
@@ -161,7 +165,7 @@ function App() {
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
-      <Header emal={email} onSignOut={handleSignOut} />
+      <Header email={email} onSignOut={handleSignOut} />
 
       <Switch>
 
@@ -209,7 +213,7 @@ function App() {
 
         <Route path="/sign-up">
           <Register onRegister={handleRegister} />
-          <InfoTooltip isOpen={isInfoTooltipOpen} isRegisered={isRegisered} onClose={closeAllPopups} />
+          <InfoTooltip isOpen={isInfoTooltipOpen} isRegistered={isRegistered} onClose={closeAllPopups} />
         </Route>
 
         <Route exact path="/">
