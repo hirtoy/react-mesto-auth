@@ -13,7 +13,6 @@ export function register(email, password) {
         body: JSON.stringify({email, password})
     })
     .then(checkResponse)
-    .catch((err) => console.log(err));
 };
 
 export function authorize(email, password) {
@@ -26,7 +25,6 @@ export function authorize(email, password) {
         body: JSON.stringify({email, password})
     })
     .then(checkResponse)
-    .catch(err => console.log(err))
 };
 
 export function checkToken(token) {
@@ -42,5 +40,4 @@ export function checkToken(token) {
         }
     )
     .then(checkResponse)
-    .catch(err => console.log(err));
 }

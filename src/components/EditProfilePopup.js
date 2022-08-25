@@ -19,7 +19,8 @@ function EditProfilePopup({ isOpen, onClose, onUpdateUser }) {
         event.preventDefault();
         onUpdateUser({
             name,
-            about:description});
+            about: description
+        });
     }
 
     return (

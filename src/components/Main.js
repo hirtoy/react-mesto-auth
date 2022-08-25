@@ -10,7 +10,7 @@ function Main(props) {
         <main className="content">
             <section className="profile">
                 <div className="profile__avatar-place">
-                    <img src={currentUser.avatar} alt="Подождите, загружается" className="profile__avatar" />
+                    <img src={currentUser.avatar} alt={props.name} className="profile__avatar" />
                     <button type="button" className="profile__avatar-overlay" onClick={props.onEditAvatar}></button>
                 </div>
 

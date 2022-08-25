@@ -10,7 +10,7 @@ function AddPlacePopup({ isOpen, onClose, onAddPlace }) {
 
     function handleSubmit(event) {
         event.preventDefault();
-        onAddPlace({name, link});
+        onAddPlace({ name, link });
     }
 
     React.useEffect(
@@ -23,7 +23,7 @@ function AddPlacePopup({ isOpen, onClose, onAddPlace }) {
     return (
         <PopupWithForm
             title="Новое место"
-            name="add" 
+            name="add"
             isOpen={isOpen}
             onClose={onClose}
             onSubmit={handleSubmit}
@@ -39,7 +39,7 @@ function AddPlacePopup({ isOpen, onClose, onAddPlace }) {
                     maxLength="30"
                     value={name}
                     onChange={handleChangeName}
-                    required/>
+                    required />
                 <span className="popup__form-error titleinput-error"></span>
             </label>
 
@@ -51,7 +51,7 @@ function AddPlacePopup({ isOpen, onClose, onAddPlace }) {
                     placeholder="Ссылка на картинку"
                     value={link}
                     onChange={handleChangeLink}
-                    required/>
+                    required />
                 <span className="popup__form-error linkinput-error"></span>
             </label>
         </PopupWithForm>
