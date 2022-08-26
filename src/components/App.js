@@ -116,14 +116,14 @@ function App() {
     Auth.register(email, password)
       .then((res) => {
         setIsRegistered(!res.error);
-       
+
       })
       .catch(err => {
         console.log(err);
         setIsRegistered(false);
         handleInfoTolltipOpen(true);
       });
-    }
+  }
 
   function handleAuthorize(email, password) {
     Auth.authorize(email, password)
@@ -131,7 +131,6 @@ function App() {
         if (data.token) {
           localStorage.setItem('jwt', data.token);
           handleLogin(email);
-          
           history.push("/");
         }
       })
@@ -178,7 +177,7 @@ function App() {
           onCardClick={handleCardClick}
           onCardDelete={handleCardDelete}
         />
-        
+
 
         <Route path="/sign-in">
           <LogIn onAuthorise={handleAuthorize} />
