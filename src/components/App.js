@@ -41,19 +41,6 @@ function App() {
     handleTokenCheck()
   }, []);
 
-  React.useEffect(() => {
-    Api.getProfile()
-      .then(setCurrentUser)
-      .catch(console.error)
-  }, []);
-
-  React.useEffect(() => {
-    Api.getInitialCards()
-      .then(res => {
-        setCards(res);
-      })
-      .catch(console.error)
-  }, []);
 
   const closeAllPopups = () => {
     setIsEditProfilePopupOpen(false);
@@ -129,10 +116,14 @@ function App() {
     Auth.register(email, password)
       .then((res) => {
         setIsRegistered(!res.error);
-        handleInfoTolltipOpen();
+       
       })
-      .catch(console.error)
-  }
+      .catch(err => {
+        console.log(err);
+        setIsRegistered(false);
+        handleInfoTolltipOpen(true);
+      });
+    }
 
   function handleAuthorize(email, password) {
     Auth.authorize(email, password)
@@ -140,7 +131,7 @@ function App() {
         if (data.token) {
           localStorage.setItem('jwt', data.token);
           handleLogin(email);
-          setLoggedIn(true);
+          
           history.push("/");
         }
       })
@@ -155,6 +146,7 @@ function App() {
 
   function handleLogin(email) {
     setEmail(email);
+    setLoggedIn(true);
     history.push('/main')
     Promise.all([Api.getProfile(), Api.getInitialCards()])
       .then(([profile, cards]) => {
@@ -177,6 +169,7 @@ function App() {
           exact path="/main"
           component={Main}
           isLoggedIn={isLoggedIn}
+          email={email}
           onEditProfile={handleEditProfileClick}
           onAddPlace={handleAddPlaceClick}
           onEditAvatar={handleEditAvatarClick}
@@ -185,6 +178,7 @@ function App() {
           onCardClick={handleCardClick}
           onCardDelete={handleCardDelete}
         />
+        
 
         <Route path="/sign-in">
           <LogIn onAuthorise={handleAuthorize} />

@@ -10,7 +10,7 @@ function InfoTooltip(props) {
         <div className={`popup ${props.isOpen && 'popup_visible'}`}>
             <div className="popup__window popup__window-place">
                 <div className="popup__wrapper">
-                    <img className="popup__img" src={img} alt={props.name} />
+                    <img className="popup__img" src={img} alt={InfoTooltip ? 'Ошибка' : 'Успешно'} />
                     <p className="popup__message">{props.isRegisered ? 'Вы успешно зарегистрировались!' : 'Что-то пошло не так. \n Попробуйте еще раз'}</p>
                 </div>
                 <button type="button" className="popup__close-button" onClick={props.onClose}></button>
