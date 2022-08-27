@@ -1,10 +1,10 @@
 import React from 'react';
-import OK from '../images/ok.svg';
-import NotOK from '../images/ok_icon.svg';
+import ok from '../images/ok.svg';
+import err from '../images/ok_icon.svg';
 
 function InfoTooltip(props) {
 
-    const img = props.isRegisered ? OK : NotOK;
+    const img = props.isRegisered ? ok : err;
 
     return (
         <div className={`popup ${props.isOpen && 'popup_visible'}`}>
